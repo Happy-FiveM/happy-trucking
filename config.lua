@@ -1,37 +1,40 @@
--- Terminals Config
--- {
---     string : name = internal name (won't be displayed)
---     string : display = display name (used for destination selection etc)
---     vector3 : getJob = place you walk up to to get the job
---     array[vector4] : trailerSpawns = legit just an array of spots that will spawn the trailers every site that is deliveryOnly false needs at least one
---     vector3 : endJob = where you finish the job
---     bool : deliveryOnly = high value jobs could be an endpoint ie you can't pickup a new job (not fucking used cause i'll have a heart attack or aneurysm or some shit)
--- }
 
+-- {coords = vector3(-702.49, 270.19, 83.15), sprite = 40, colour = 2, scale = 0.6, shortRange = true, label = 'Dynasty 8', display = 6},
 Config = {
+    General = {
+        blip = {
+            sprite = 477, -- radar_truck
+            colour = 0, -- white
+            scale = 0.6,
+            shortRange = true,
+            label = 'Trucking',
+            display = 2, -- minimap and main map (selectable)
+        },
+        debug = true,
+    },
     Terminals = {
-        {
+        docks = {
             name = 'docks',
             display = 'International Docks',
             getJob = vector3(917.52, -3239.92, 5.9),
             endJob = vector3(933.21, -3188.43, 5.9), 
             deliveryOnly = false,
         },
-        {
+        lsia = {
             name = 'lsia',
             display = 'Los Santos International Airport',
             getJob = vector3(-1072.8, -2183.97, 13.39),
             endJob = vector3(-1036.35, -2213.36, 8.98),
             deliveryOnly = false,
         },
-        {
+        lumber = {
             name = 'lumber',
             display = 'Lumberyard',
             getJob = vector3(-567.33, 5253.07, 70.47),
             endJob = vector3(-509.19, 5241.6, 80.3),
             deliveryOnly = false,
         },
-        {
+        cluckin = {
             name = 'cluckin',
             display = 'Cluckin Bell Factory',
             getJob = vector3(122.05, 6405.63, 31.35),
@@ -43,78 +46,97 @@ Config = {
             },
             deliveryOnly = false,
         },
-        {
+        refinery = {
             name = 'refinery',
             display = 'Chianski Refinery',
             getJob = vector3(2916.3, 4368.04, 50.46),
+            endJob = vector3(2933.29, 4309.7, 50.95),
             deliveryOnly = false,
         },
-        {
-            name = 'quarry',
-            display = 'Davis Quartz Quarry',
-            getJob = vector3(2707.29, 2776.71, 37.88),
-            deliveryOnly = false,
-        },
-        {
+        power = {
             name = 'power',
             display = 'Palmer-Taylor Power Station',
-            getJob = vector3(2748.43, 1453.73, 24.5),
+            getJob = vector4(2747.95, 1452.59, 24.49, 343.94),
+            endJob = vector3(2832.95, 1471.15, 24.56),
+            trailerSpawns = {
+                vector4(2782.24, 1409.8, 24.44, 90.95),
+                vector4(2835.2, 1620.25, 24.51, 91.39),
+                vector4(2834.7, 1626.54, 24.53, 90.68),
+                vector4(2835.23, 1631.15, 24.54, 90.94),
+                vector4(2833.69, 1678.14, 24.58, 90.17)
+            },
+            truckSpawns = {
+                vector4(2703.17, 1374.25, 24.5, 0.07),
+                vector4(2706.82, 1373.44, 24.5, 0.29),
+                vector4(2710.3, 1373.53, 24.5, 0.5),
+                vector4(2717.82, 1373.37, 24.5, 359.12),
+                vector4(2721.36, 1373.4, 24.5, 0.35),
+                vector4(2725.0, 1373.7, 24.5, 359.48),
+                vector4(2728.75, 1374.03, 24.5, 359.51),
+            },
             deliveryOnly = false,
         },
-        {
+        youtool = {
             name = 'youtool',
             display = 'Youtool',
             getJob = vector3(2709.91, 3455.15, 56.32),
+            endJob = vector3(2680.6, 3458.03, 55.75),
             deliveryOnly = false,
         },
+        -- {
+        --     name = 'quarry',
+        --     display = 'Davis Quartz Quarry',
+        --     getJob = vector3(2707.29, 2776.71, 37.88),
+        --     deliveryOnly = false,
+        -- },
     },
     Trucks = {
-        Packer = {
+        {
             model = 'packer',
-            TrailerIncluded = false,
+            trailerIncluded = false,
         },
-        Phantom = {
+        {
             model = 'phantom',
-            TrailerIncluded = false,
+            trailerIncluded = false,
         },
-        Phantom3 = {
+        {
             model = 'phantom3',
-            TrailerIncluded = false,
+            trailerIncluded = false,
         },
-        Hauler = {
+        {
             model = 'hauler',
-            TrailerIncluded = false,
+            trailerIncluded = false,
         },
-        Pounder = {
-            model = 'pounder',
-            TrailerIncluded = true,
-        },
-        Mule = {
-            model = 'mule',
-            TrailerIncluded = true,
-        },
-        Mule2 = {
-            model = 'mule2',
-            TrailerIncluded = true,
-        },
-        Mule3 = {
-            model = 'mule3',
-            TrailerIncluded = true,
-        },
-        Benson = {
-            model = 'benson',
-            TrailerIncluded = true
-        }
+        -- {
+        --     model = 'pounder',
+        --     trailerIncluded = true,
+        -- },
+        -- {
+        --     model = 'mule',
+        --     trailerIncluded = true,
+        -- },
+        -- {
+        --     model = 'mule2',
+        --     trailerIncluded = true,
+        -- },
+        -- {
+        --     model = 'mule3',
+        --     trailerIncluded = true,
+        -- },
+        -- {
+        --     model = 'benson',
+        --     trailerIncluded = true
+        -- }
     },
     Trailers = {
-        Container1 = 'trailers4',
-        Container2 = 'trailers',
-        Container3 = 'trailers2',
-        Container4 = 'trailers3',
-        CarTrailer = 'tr4',
-        BailTrailer = 'baletrailer',
-        TankerTrailer = 'tanker',
-        LogsTrailer = 'trailerlogs',
-        TvTrailer = 'tvtrailer',
+        'trailers',
+        'trailers2',
+        'trailers3',
+        'trailers4',
+        'tr4',
+        'baletrailer',
+        'tanker',
+        'trailerlogs',
+        'tvtrailer',
     }
 }
