@@ -51,6 +51,25 @@ Config = {
             display = 'Chianski Refinery',
             getJob = vector3(2916.3, 4368.04, 50.46),
             endJob = vector3(2933.29, 4309.7, 50.95),
+            trailerSpawns = {
+                vector4(2890.56, 4402.6, 50.26, 187.08),
+                vector4(2932.18, 4346.11, 52.01, 20.73),
+            },
+            truckSpawns = {
+                vector4(2907.59, 4398.2, 50.26, 24.36),
+                vector4(2904.53, 4396.4, 50.27, 26.08),
+            },
+            destinations = {
+                'cluckin',
+                'lumber',
+                'lsia',
+                'docks',
+            },
+            trailersToLocation = {
+                'trailers',
+                'trailers4',
+                'tanker',
+            },
             deliveryOnly = false,
         },
         power = {
@@ -77,6 +96,11 @@ Config = {
                 'lumber',
                 'lsia',
                 'docks',
+            },
+            trailersToLocation = {
+                'trailers',
+                'trailers4',
+                'tanker',
             },
             deliveryOnly = false,
         },
@@ -111,26 +135,26 @@ Config = {
             model = 'hauler',
             trailerIncluded = false,
         },
-        -- {
-        --     model = 'pounder',
-        --     trailerIncluded = true,
-        -- },
-        -- {
-        --     model = 'mule',
-        --     trailerIncluded = true,
-        -- },
-        -- {
-        --     model = 'mule2',
-        --     trailerIncluded = true,
-        -- },
-        -- {
-        --     model = 'mule3',
-        --     trailerIncluded = true,
-        -- },
-        -- {
-        --     model = 'benson',
-        --     trailerIncluded = true
-        -- }
+        {
+            model = 'pounder',
+            trailerIncluded = true,
+        },
+        {
+            model = 'mule',
+            trailerIncluded = true,
+        },
+        {
+            model = 'mule2',
+            trailerIncluded = true,
+        },
+        {
+            model = 'mule3',
+            trailerIncluded = true,
+        },
+        {
+            model = 'benson',
+            trailerIncluded = true
+        }
     },
     Trailers = {
         'trailers',
