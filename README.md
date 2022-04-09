@@ -10,6 +10,10 @@ power = { -- this should match the name
     display = 'Palmer-Taylor Power Station', -- display name for the delivery terminal, this can be whatever you want
     getJob = vector4(2747.95, 1452.59, 24.49, 343.94), -- The spot to create the circleZone to receive the job
     endJob = vector3(2832.95, 1471.15, 24.56), -- The spot to create the circleZone to end deliveries
+    cancelJob = { 
+        center = vector3(2723.49, 1361.57, 24.52), -- The spot to create the circleZone to cancel deliveries
+        radius = 35.0, -- Radius of the cancel circleZone
+    },
     trailerSpawns = { -- array of trailer spawn points
         vector4(2831.02, 1626.66, 24.57, 139.83),
         vector4(2830.72, 1633.94, 24.59, 142.3),
