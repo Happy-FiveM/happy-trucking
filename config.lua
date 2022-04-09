@@ -59,11 +59,9 @@ Config = {
             getJob = vector4(2747.95, 1452.59, 24.49, 343.94),
             endJob = vector3(2832.95, 1471.15, 24.56),
             trailerSpawns = {
-                vector4(2782.24, 1409.8, 24.44, 90.95),
-                vector4(2835.2, 1620.25, 24.51, 91.39),
-                vector4(2834.7, 1626.54, 24.53, 90.68),
-                vector4(2835.23, 1631.15, 24.54, 90.94),
-                vector4(2833.69, 1678.14, 24.58, 90.17)
+                vector4(2831.02, 1626.66, 24.57, 139.83),
+                vector4(2830.72, 1633.94, 24.59, 142.3),
+                vector4(2832.55, 1643.95, 24.65, 140.73),
             },
             truckSpawns = {
                 vector4(2703.17, 1374.25, 24.5, 0.07),
@@ -73,6 +71,12 @@ Config = {
                 vector4(2721.36, 1373.4, 24.5, 0.35),
                 vector4(2725.0, 1373.7, 24.5, 359.48),
                 vector4(2728.75, 1374.03, 24.5, 359.51),
+            },
+            destinations = {
+                'cluckin',
+                'lumber',
+                'lsia',
+                'docks',
             },
             deliveryOnly = false,
         },
@@ -134,7 +138,6 @@ Config = {
         'trailers3',
         'trailers4',
         'tr4',
-        'baletrailer',
         'tanker',
         'trailerlogs',
         'tvtrailer',
