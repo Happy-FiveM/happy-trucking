@@ -11,13 +11,44 @@ Config = {
             display = 2, -- minimap and main map (selectable)
         },
         debug = true,
+        jobInProgress = false,
+        currentDestination = nill,
     },
     Terminals = {
         docks = {
             name = 'docks',
             display = 'International Docks',
             getJob = vector3(917.52, -3239.92, 5.9),
-            endJob = vector3(933.21, -3188.43, 5.9), 
+            endJob = vector3(933.21, -3188.43, 5.9),
+            cancelJob = {
+                center = vector3(995.55, -3210.48, 5.9),
+                radius = 30.0,
+            },
+            trailerSpawns = {
+                vector4(896.51, -3208.65, 5.9, 178.71),
+                vector4(900.51, -3208.65, 5.9, 178.71),
+                vector4(904.51, -3208.65, 5.9, 178.71),
+                vector4(908.51, -3208.65, 5.9, 178.71),
+                vector4(912.51, -3208.65, 5.9, 178.71),
+            },
+            truckSpawns = {
+                vector4(989.55, -3210.46, 5.9, 175.45),
+                vector4(993.55, -3210.46, 5.9, 175.45),
+                vector4(997.55, -3210.46, 5.9, 175.45),
+                vector4(1001.55, -3210.46, 5.9, 175.45),
+            },
+            destinations = {
+                'cluckin',
+                'lumber',
+                'refinery',
+                'power',
+                'youtool',
+            },
+            trailersToLocation = {
+                'trailers',
+                'trailers4',
+                'tanker',
+            },
             deliveryOnly = false,
         },
         lsia = {
@@ -75,8 +106,12 @@ Config = {
         power = {
             name = 'power',
             display = 'Palmer-Taylor Power Station',
-            getJob = vector4(2747.95, 1452.59, 24.49, 343.94),
+            getJob = vector3(2747.95, 1452.59, 24.49),
             endJob = vector3(2832.95, 1471.15, 24.56),
+            cancelJob = {
+                center = vector3(2723.49, 1361.57, 24.52),
+                radius = 35.0,
+            },
             trailerSpawns = {
                 vector4(2831.02, 1626.66, 24.57, 139.83),
                 vector4(2830.72, 1633.94, 24.59, 142.3),
@@ -109,6 +144,32 @@ Config = {
             display = 'Youtool',
             getJob = vector3(2709.91, 3455.15, 56.32),
             endJob = vector3(2680.6, 3458.03, 55.75),
+            cancelJob = {
+                center = vector3(2675.0, 3521.15, 52.71),
+                radius = 20.0,
+            },
+            trailerSpawns = {
+                vector4(2670.87, 3513.56, 52.71, 62.47),
+                vector4(2674.22, 3517.41, 52.71, 65.91),
+                vector4(2675.0, 3521.15, 52.71, 60.06),
+                vector4(2676.15, 3524.59, 52.59, 53.91),
+            },
+            truckSpawns = {
+                vector4(2739.36, 3409.42, 56.69, 327.54),
+                vector4(2735.44, 3410.67, 56.74, 337.38),
+            },
+            destinations = {
+                'cluckin',
+                'lumber',
+                'lsia',
+                'docks',
+            },
+            trailersToLocation = {
+                'trailers',
+                'trailers2',
+                'trailers3',
+                'trailers4',
+            },
             deliveryOnly = false,
         },
         -- {
@@ -135,26 +196,26 @@ Config = {
             model = 'hauler',
             trailerIncluded = false,
         },
-        {
-            model = 'pounder',
-            trailerIncluded = true,
-        },
-        {
-            model = 'mule',
-            trailerIncluded = true,
-        },
-        {
-            model = 'mule2',
-            trailerIncluded = true,
-        },
-        {
-            model = 'mule3',
-            trailerIncluded = true,
-        },
-        {
-            model = 'benson',
-            trailerIncluded = true
-        }
+        -- {
+        --     model = 'pounder',
+        --     trailerIncluded = true,
+        -- },
+        -- {
+        --     model = 'mule',
+        --     trailerIncluded = true,
+        -- },
+        -- {
+        --     model = 'mule2',
+        --     trailerIncluded = true,
+        -- },
+        -- {
+        --     model = 'mule3',
+        --     trailerIncluded = true,
+        -- },
+        -- {
+        --     model = 'benson',
+        --     trailerIncluded = true
+        -- }
     },
     Trailers = {
         'trailers',

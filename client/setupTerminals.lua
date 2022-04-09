@@ -11,12 +11,7 @@ Citizen.CreateThread(function()
 
         terminal.getJobZone:onPlayerInOut(function(isPointInside, point)
             terminal.getJobPlayerIn = isPointInside
-            if isPointInside then
-                print("Entered get: " .. terminal.name)
-            else
-                
-                print("Exited get: " .. terminal.name)
-            end
+            TriggerEvent('happy:client:truckingStartZone', terminal)
         end)
 
 
@@ -27,13 +22,20 @@ Citizen.CreateThread(function()
 
         terminal.endJobZone:onPlayerInOut(function(isPointInside, point)
             terminal.endJobPlayerIn = isPointInside
-            if isPointInside then
-                print("Entered end: " .. terminal.name)
-            else
-                
-                print("Exited end: " .. terminal.name)
-            end
+            TriggerEvent('happy:client:truckingEndZone', terminal)
         end)
+
+        if terminal.cancelJob then
+            terminal.cancelJobZone = CircleZone:Create(terminal.cancelJob.center, terminal.cancelJob.radius, {
+                name = terminal.name .. "_cancel_job_zone",
+                debugPoly = Config.General.debug,
+            })
+
+            terminal.cancelJobZone:onPlayerInOut(function(isPointInside, point)
+                terminal.cancelJobPlayerIn = isPointInside
+                TriggerEvent('happy:client:truckingCancelZone', terminal)
+            end)
+        end
     end
 end)
 

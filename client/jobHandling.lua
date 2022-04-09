@@ -1,33 +1,27 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 
-local jobInProgress = false
-local currentDestination = null
 local currentTruck = nill
 local currentTrailer = nill
 local destinationBlip = nill
 local trailerBlip = nill
 
-Citizen.CreateThread(function()
-    while true do
-        for _, terminal in pairs(Config.Terminals) do
-            while terminal.getJobPlayerIn do
-                SetTextComponentFormat("STRING") 
-                AddTextComponentString("Press ~INPUT_CONTEXT~ to get a job")
-                DisplayHelpTextFromStringLabel(0, 0, 1, -1)
+-- ENTRY POINT FUNCTIONS --
+function startJob(terminal)
+    Config.General.jobInProgress = true
+    Config.General.currentDestination = Config.Terminals[terminal.destinations[math.random(#terminal.destinations)]]
+    createTruck(terminal)
+end
 
-                if IsControlJustPressed(0, 51) then
-                    jobInProgress = true
-                    currentDestination = Config.Terminals[terminal.destinations[math.random(#terminal.destinations)]]
-                    createTruck(terminal)
-                end
+function endJob()
+    clearJob()
+end
 
-                Citizen.Wait(0);
-            end
-        end
-        Citizen.Wait(500)
-    end
-end)
+function cancelJob()
+    clearJob()
+end
 
+
+-- UTILITY FUNCTIONS --
 function createTruck(terminal)
     local ped = PlayerPedId()
     local truck = Config.Trucks[math.random(#Config.Trucks)]
@@ -44,16 +38,34 @@ function createTruck(terminal)
     local truckSpawn = terminal.truckSpawns[math.random(#terminal.truckSpawns)]
     currentTruck = CreateVehicle(vehHash, vector3(truckSpawn.x, truckSpawn.y, truckSpawn.z), truckSpawn.w, true, false)
     TaskWarpPedIntoVehicle(ped, currentTruck, -1)
-    SetModelAsNoLongerNeeded(currentTruck)
+    TriggerEvent("vehiclekeys:client:SetOwner", QBCore.Functions.GetPlate(currentTruck))
+
+    SetModelAsNoLongerNeeded(vehHash)
 
     if truck.trailerIncluded == false then
-        createTrailer(terminal, ped)
+        createTrailer(terminal)
     else
         routeToDestination()
     end
 end
 
-function createTrailer(terminal, ped)
+function clearJob()
+    Config.General.jobInProgress = false
+    RemoveBlip(trailerBlip)
+    RemoveBlip(destinationBlip)
+    Config.General.currentDestination = nill
+
+    if currentTruck ~= 0 then
+        SetEntityAsMissionEntity(currentTruck, true, true)
+        DeleteVehicle(currentTruck)
+    end
+    if currentTrailer ~= 0 then
+        SetEntityAsMissionEntity(currentTruck, true, true)
+        DeleteVehicle(currentTruck)
+    end
+end
+
+function createTrailer(terminal)
     local trailer = Config.Trailers[math.random(#Config.Trailers)]
     local trailerHash = GetHashKey(trailer)
 
@@ -85,7 +97,7 @@ function createTrailer(terminal, ped)
 end
 
 function routeToDestination()
-    destinationBlip = AddBlipForCoord(currentDestination.endJob)
+    destinationBlip = AddBlipForCoord(Config.General.currentDestination.endJob)
     SetBlipSprite(destinationBlip, 1)
     SetBlipRoute(destinationBlip,  true)
     SetBlipRouteColour(destinationBlip, 2)
@@ -93,7 +105,7 @@ function routeToDestination()
 end
 
 function startTrackingTrailer()
-    while jobInProgress do
+    while Config.General.jobInProgress do
         if IsVehicleAttachedToTrailer(currentTruck) then
             RemoveBlip(trailerBlip)
             if DoesBlipExist(destinationBlip) == false then

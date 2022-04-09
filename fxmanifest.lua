@@ -8,8 +8,9 @@ shared_scripts {
 client_scripts {
     '@PolyZone/client.lua',
     '@PolyZone/CircleZone.lua',
-    'setupTerminals.lua',
-    'client.lua',
+    'client/setupTerminals.lua',
+    'client/jobHandling.lua',
+    'client/eventHandling.lua',
 }
 
 server_scripts {
