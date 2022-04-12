@@ -56,6 +56,36 @@ Config = {
             display = 'Los Santos International Airport',
             getJob = vector3(-1072.8, -2183.97, 13.39),
             endJob = vector3(-1036.35, -2213.36, 8.98),
+            cancelJob = {
+                center = vector3(-1081.92, -2156.11, 13.4),
+                radius = 20,
+            },
+            trailerSpawns = {
+                vector4(-1132.94, -2228.75, 13.2, 329.09),
+                vector4(-1136.87, -2222.95, 13.2, 329.09),
+                vector4(-1141.76, -2219.9, 13.2, 329.09),
+            },
+            truckSpawns = {
+                vector4(-1078.11, -2152.7, 13.4, 42.3),
+                vector4(-1080.79, -2155.14, 13.4, 42.3),
+                vector4(-1080.79, -2155.14, 13.4, 42.3),
+            },
+            destinations = {
+                'cluckin',
+                'lumber',
+                'power',
+                'refinery',
+                'youtool',
+                'docks',
+            },
+            trailersToLocation = {
+                'trailers',
+                'trailers2',
+                'trailers3',
+                'trailers4',
+                'tr4',
+                'tanker',
+            },
             deliveryOnly = false,
         },
         lumber = {
@@ -63,6 +93,29 @@ Config = {
             display = 'Lumberyard',
             getJob = vector3(-567.33, 5253.07, 70.47),
             endJob = vector3(-509.19, 5241.6, 80.3),
+            cancelJob = {
+                center = vector3(-571.92, 5371.34, 70.22),
+                radius = 25.0,
+            },
+            trailerSpawns = {
+                vector4(-600.07, 5288.26, 70.23, 225.25),
+                vector4(-601.23, 5294.66, 70.21, 225.25),
+                vector4(-601.75, 5301.85, 70.21, 225.25),
+            },
+            truckSpawns =  {
+                vector4(-575.14, 5370.0, 70.24, 241.57),
+                vector4(-572.26, 5374.04, 70.23, 241.57),
+            },
+            destinations = {
+                'cluckin',
+                'refinery',
+                'youtool',
+                'lsia',
+                'docks',
+            },
+            trailersToLocation = {
+                'trailerlogs',
+            },
             deliveryOnly = false,
         },
         cluckin = {
@@ -172,12 +225,6 @@ Config = {
             },
             deliveryOnly = false,
         },
-        -- {
-        --     name = 'quarry',
-        --     display = 'Davis Quartz Quarry',
-        --     getJob = vector3(2707.29, 2776.71, 37.88),
-        --     deliveryOnly = false,
-        -- },
     },
     Trucks = {
         {
@@ -189,33 +236,29 @@ Config = {
             trailerIncluded = false,
         },
         {
-            model = 'phantom3',
-            trailerIncluded = false,
-        },
-        {
             model = 'hauler',
             trailerIncluded = false,
         },
-        -- {
-        --     model = 'pounder',
-        --     trailerIncluded = true,
-        -- },
-        -- {
-        --     model = 'mule',
-        --     trailerIncluded = true,
-        -- },
-        -- {
-        --     model = 'mule2',
-        --     trailerIncluded = true,
-        -- },
-        -- {
-        --     model = 'mule3',
-        --     trailerIncluded = true,
-        -- },
-        -- {
-        --     model = 'benson',
-        --     trailerIncluded = true
-        -- }
+        {
+            model = 'pounder',
+            trailerIncluded = true,
+        },
+        {
+            model = 'mule',
+            trailerIncluded = true,
+        },
+        {
+            model = 'mule2',
+            trailerIncluded = true,
+        },
+        {
+            model = 'mule3',
+            trailerIncluded = true,
+        },
+        {
+            model = 'benson',
+            trailerIncluded = true
+        }
     },
     Trailers = {
         'trailers',
