@@ -1,30 +1,17 @@
-
 local QBCore = exports['qb-core']:GetCoreObject()
 
-RegisterServerEvent('orrp:server:dumpsterTimer')
-AddEventHandler('orrp:server:dumpsterTimer', function(car)
-    startTimer(source, car)
+RegisterServerEvent('happy:server:finishJob')
+AddEventHandler('happy:server:finishJob', function(dist)
+    local payment = math.floor(dist * Config.General.distanceToMoneyFactorial)
+    print(payment)
+    payment = payment + math.random(Config.General.payVariationMax)
+    print(payment)
+    local player = QBCore.Functions.GetPlayer(source)
+    local charInfo = player.PlayerData.charinfo
+    local charName = charInfo.firstname .. ' ' .. charInfo.lastname
+
+    player.Functions.AddMoney('bank', payment)
+    TriggerClientEvent('QBCore:Notify', source, 'Completed delivery fee received')
+    TriggerEvent('okokBanking:AddNewTransaction', charName, charInfo.cid, 'Los Santos Shipping', 'ls_shipping', payment, 'Trucking Pay')
 end)
 
-RegisterServerEvent('orrp:server:giveItem')
-AddEventHandler('orrp:server:giveItem', function(item, amount)
-    local src = source 
-    local Player = QBCore.Functions.GetPlayer(src)
-    if (amount == nil) then
-        amount = math.random(1, 2)
-    end
-    Player.Functions.AddItem(item, amount)
-    TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[item], 'add')
-end)
-
-function startTimer(id, object)
-    local timer = 10 * 60000
-
-    while timer > 0 do
-        Wait(1000)
-        timer = timer - 1000
-        if timer == 0 then
-            TriggerClientEvent('orrp:removeDumpster', id, object)
-        end
-    end
-end
