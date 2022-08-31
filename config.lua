@@ -1,3 +1,5 @@
+ESX = exports['es_extended']:getSharedObject()
+
 Config = {
     General = {
         blip = { -- wouldn't normally do blips in the script, usually have my own blips script or part of my custom core powered by db tables
@@ -15,8 +17,8 @@ Config = {
             trailerRequired = false,
             currentTruck = nil
         },
-        debug = true, -- just affects whether we show polyzone debug
-        getJobPedModel = `s_m_y_airworker`,
+        debug = false, -- just affects whether we show polyzone debug
+        getJobPedModel = `s_m_y_airworker`, -- just the ped we use to do the job management, get's targeted individually as an entity when they exist
         distanceToMoneyFactorial = 0.6, -- pay is primarily calculated by distance, this is the modifier to distance so if distance is 1000 and modifier is 0.7, base pay will be 700
         payVariationMax = 1000 -- this is the maximum the base pay can be modified by, to add variation to money earned for the same journey we do a math.random on this bitch and add to the base pay
     },
@@ -110,7 +112,7 @@ Config = {
         cluckin = {
             name = 'cluckin',
             display = 'Cluckin Bell Factory',
-            getJob = vec4(122.05, 6405.63, 30.35, 308.23),
+            getJob = vec4(122.39, 6406.04, 30.35, 311.81),
             trailerSpawns = {
                 vec4(147.53, 6413.94, 31.24, 78.94),
                 vec4(153.27, 6415.6, 30.98, 73.57),

@@ -1,6 +1,9 @@
 fx_version 'cerulean'
 game 'gta5'
 
+author "Happychap612#0001"
+description "Happy Trucking"
+version "1.0"
 shared_scripts {
     'config.lua',
 }

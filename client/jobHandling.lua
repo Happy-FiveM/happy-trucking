@@ -1,5 +1,3 @@
-local QBCore = exports['qb-core']:GetCoreObject()
-
 local currentTruck = nil
 local currentTrailer = nil
 local destinationBlip = nil
@@ -25,7 +23,7 @@ function startJob(startTerminal, endTerminal)
 end
 
 function endJob()
-    TriggerServerEvent('happy:server:finishJob', currentJobDistance)
+    TriggerServerEvent('happy:trucking:server:finishJob', currentJobDistance)
     clearJob()
 end
 
@@ -46,15 +44,16 @@ function createTruck(terminal)
     currentTruck = CreateVehicle(vehHash, vector3(truckSpawn.x, truckSpawn.y, truckSpawn.z), truckSpawn.w, true, false)
     Config.General.JobState.currentTruck = currentTruck
     exports['LegacyFuel']:SetFuel(currentTruck, 100.0)
-    TaskWarpPedIntoVehicle(localPlayer, currentTruck, -1)
-    TriggerEvent("vehiclekeys:client:SetOwner", QBCore.Functions.GetPlate(currentTruck))
+    TaskWarpPedIntoVehicle(PlayerPedId(), currentTruck, -1)
+    -- currentTruckInfo = ESX.Game.GetVehicleProperties(vehicle)
+    -- TriggerEvent("vehiclekeys:client:SetOwner", currentTruckInfo.plate)
 
     SetModelAsNoLongerNeeded(vehHash)
 
     exports.qtarget:AddTargetEntity(currentTruck, {
         options = {
             {
-                event = "happy:client:cancelJob",
+                event = "happy:trucking:client:cancelJob",
                 icon = "fas fa-truck",
                 label = "Cancel current delivery",
             }

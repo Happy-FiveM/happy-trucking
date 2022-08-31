@@ -10,7 +10,7 @@ Citizen.CreateThread(function()
         -- Build this array outside the events so that we don't rebuild it every time someone enters the zone cause that'd be dum
         terminal.getJobPedDestinations = {
             {
-                event = "happy:client:completeJob",
+                event = "happy:trucking:client:completeJob",
                 icon = "fas fa-truck-fast",
                 label = "Complete delivery",
                 canInteract = function()
@@ -23,7 +23,7 @@ Citizen.CreateThread(function()
         }
         for _, dest in pairs(terminal.destinations) do
             terminal.getJobPedDestinations[#terminal.getJobPedDestinations+1] = {
-                event = "happy:client:startJob",
+                event = "happy:trucking:client:startJob",
                 icon = "fas fa-truck-arrow-right",
                 label = "Deliver to " .. Config.Terminals[dest].display,
                 canInteract = function()
