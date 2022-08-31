@@ -1,5 +1,5 @@
-RegisterServerEvent('orrp:trucking:server:finishJob')
-AddEventHandler('orrp:trucking:server:finishJob', function(dist)
+RegisterServerEvent('happy:trucking:server:finishJob')
+AddEventHandler('happy:trucking:server:finishJob', function(dist)
     local payment = math.floor(dist * Config.General.distanceToMoneyFactorial)
     payment = payment + math.random(Config.General.payVariationMax)
 
