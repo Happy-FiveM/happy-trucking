@@ -5,7 +5,8 @@ AddEventHandler('happy:trucking:server:finishJob', function(dist)
 
     local xPlayer = ESX.GetPlayerFromId(source)
     xPlayer.addAccountMoney('bank', payment)
-    TriggerClientEvent('okokNotify:Alert', source, "Completed Delivery", "Paid $" .. payment .. " for completing the delivery", 5000, 'success')
+    
+    TriggerClientEvent('happy:trucking:client:jobCompleteNotification', source, payment)
     TriggerEvent('okokBanking:AddNewTransaction', xPlayer.getName(), xPlayer.getIdentifier(), 'Los Santos Shipping', 'ls_shipping', payment, 'Trucking Pay')
 end)
 

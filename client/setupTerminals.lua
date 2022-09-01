@@ -2,91 +2,54 @@ Citizen.CreateThread(function()
     for _, terminal in pairs(Config.Terminals) do
         createBlip(terminal)
 
-        terminal.getJobZone = CircleZone:Create(terminal.getJob, 60, {
-            name = terminal.name .. "_near_terminal_zone",
-            debugPoly = Config.General.debug,
-        })
+        terminal.getJobZone = lib.zones.sphere({
+            coords  = vec3(terminal.getJob),
+            radius  = Config.General.sphereZoneRadius,
+            debug   = Config.General.debug,
+            onEnter = function(self)
+                spawnPedAndSetup(terminal)
 
-        -- Build this array outside the events so that we don't rebuild it every time someone enters the zone cause that'd be dum
-        terminal.getJobPedDestinations = {
-            {
-                event = "happy:trucking:client:completeJob",
-                icon = "fas fa-truck-fast",
-                label = "Complete delivery",
-                canInteract = function()
-                    if not Config.General.JobState.currentDestination then return end
-                    local rightPlace = Config.General.JobState.currentDestination.name == terminal.name
-                    local trailer = not Config.General.JobState.trailerRequired or IsVehicleAttachedToTrailer(Config.General.JobState.currentTruck)
-                    return Config.General.JobState.jobInProgress and rightPlace and Config.General.JobState.truckAtDestination and trailer
+                if (Config.General.JobState.currentTruck ~= nil) then
+                    local truckPos = GetEntityCoords(Config.General.JobState.currentTruck)
+                    Config.General.JobState.truckAtDestination = Config.General.sphereZoneRadius >= #(truckPos - vec3(terminal.getJob))
                 end
-            }
-        }
-        for _, dest in pairs(terminal.destinations) do
-            terminal.getJobPedDestinations[#terminal.getJobPedDestinations+1] = {
-                event = "happy:trucking:client:startJob",
-                icon = "fas fa-truck-arrow-right",
-                label = "Deliver to " .. Config.Terminals[dest].display,
-                canInteract = function()
-                    return not Config.General.JobState.jobInProgress
-                end,
-                startTerminal = terminal.name,
-                endTerminal = dest
-            }
-        end
-
-        -- ped spawn stuff
-        terminal.getJobZone:onPlayerInOut(function(isPointInside, point)
-            if (not isPointInside) then -- this will nix the job giver ped and early exit
-                if (terminal.getJobPed ~= nil) then
+            end,
+            onExit = function(self)
+                if (terminal.getJobPed) then
                     DeletePed(terminal.getJobPed)
                 end
-                return
-            end
-            
-            -- load model and then bugger off 
-            if not HasModelLoaded(Config.General.getJobPedModel) then RequestModel(Config.General.getJobPedModel) end
-            while not HasModelLoaded(Config.General.getJobPedModel) do
-                Citizen.Wait(10)
-            end
 
-            -- spawn ped and give them a clipboard and make em invincible and shiz
-            terminal.getJobPed = CreatePed(1, Config.General.getJobPedModel, terminal.getJob.x, terminal.getJob.y, terminal.getJob.z, terminal.getJob.w, false, true)
-            FreezeEntityPosition(terminal.getJobPed, true)
-            SetEntityInvincible(terminal.getJobPed, true)
-            SetBlockingOfNonTemporaryEvents(terminal.getJobPed, true)
-            TaskStartScenarioInPlace(terminal.getJobPed, 'WORLD_HUMAN_CLIPBOARD', true)
-
-            -- unload model
-            SetModelAsNoLongerNeeded(Config.General.getJobPedModel)
-            
-            -- set qtarget for job ped to destination options and job completion bits, all conditional etc
-            exports.qtarget:AddTargetEntity(terminal.getJobPed, {
-                options = terminal.getJobPedDestinations,
-                distance = 4
-            })
-        end)
-
-        -- stuff to deal with if truck is actually at dest
-        terminal.getJobZone:onPlayerInOut(function(isPointInside, point)
-            if (not isPointInside) then -- this will falsify the at destination val and early exit
                 Config.General.JobState.truckAtDestination = false
-                return
             end
+        })
 
-            -- if terminal isn't destination but they've entered the area then early exit
-            if (Config.General.JobState.currentDestination ~= nil and terminal.name ~= Config.General.JobState.currentDestination.name) then
-                return
-            end
+        local destinationDisplayList = {}
+        terminal.getJobPedDestinations = {}
+        for _, dest in pairs(terminal.destinations) do
+            destinationDisplayList[#destinationDisplayList+1] = Config.Terminals[dest].display
+            terminal.getJobPedDestinations[Config.Terminals[dest].display] = dest
+        end
 
-            -- if truck isn't set early exist
-            if (Config.General.JobState.currentTruck == nil) then
-                return
-            end
-
-            -- get truck pos and checks if inside once player enters zone
-            local truckPos = GetEntityCoords(Config.General.JobState.currentTruck)
-            Config.General.JobState.truckAtDestination = terminal.getJobZone:isPointInside(truckPos)
+        lib.registerMenu({
+            id = terminal.name .. '_start_job',
+            title = 'Delivery Options',
+            position = 'top-left',
+            options = {
+                {
+                    label  = 'Destination',
+                    values = destinationDisplayList
+                }
+            }
+        }, function(selected, scrollIndex, args)
+            local destName = terminal.getJobPedDestinations[destinationDisplayList[scrollIndex]]
+            startJob(terminal.name, destName)
         end)
+
+        if (Config.General.debug) then
+            RegisterCommand(terminal.name, function()
+                lib.showMenu(terminal.name .. '_start_job')
+            end)
+        end
     end
 end)
 
@@ -100,4 +63,46 @@ function createBlip(terminal)
     BeginTextCommandSetBlipName("STRING")
     AddTextComponentString(Config.General.blip.label)
     EndTextCommandSetBlipName(terminal.blip)
+end
+
+function spawnPedAndSetup(terminal)
+    if not HasModelLoaded(Config.General.getJobPedModel) then RequestModel(Config.General.getJobPedModel) end
+    while not HasModelLoaded(Config.General.getJobPedModel) do
+        Citizen.Wait(10)
+    end
+
+    terminal.getJobPed = CreatePed(1, Config.General.getJobPedModel, terminal.getJob.x, terminal.getJob.y, terminal.getJob.z, terminal.getJob.w, false, true)
+    FreezeEntityPosition(terminal.getJobPed, true)
+    SetEntityInvincible(terminal.getJobPed, true)
+    SetBlockingOfNonTemporaryEvents(terminal.getJobPed, true)
+    TaskStartScenarioInPlace(terminal.getJobPed, 'WORLD_HUMAN_CLIPBOARD', true)
+
+    SetModelAsNoLongerNeeded(Config.General.getJobPedModel)
+
+    exports.qtarget:AddTargetEntity(terminal.getJobPed, {
+        options = {
+            {
+                action = function ()
+                    lib.showMenu(terminal.name .. '_start_job')
+                end,
+                icon = "fas fa-truck-arrow-right",
+                label = "Start Delivery",
+                canInteract = function()
+                    return not Config.General.JobState.jobInProgress
+                end
+            },
+            {
+                event = "happy:trucking:client:completeJob",
+                icon = "fas fa-truck-fast",
+                label = "Complete delivery",
+                canInteract = function()
+                    if not Config.General.JobState.currentDestination then return end
+                    local rightPlace = Config.General.JobState.currentDestination.name == terminal.name
+                    local trailer = not Config.General.JobState.trailerRequired or IsVehicleAttachedToTrailer(Config.General.JobState.currentTruck)
+                    return Config.General.JobState.jobInProgress and rightPlace and Config.General.JobState.truckAtDestination and trailer
+                end
+            }
+        },
+        distance = 4
+    })
 end
