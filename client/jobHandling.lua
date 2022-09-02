@@ -15,6 +15,8 @@ end)
 
 -- ENTRY POINT FUNCTIONS --
 function startJob(startTerminal, endTerminal)
+    TriggerServerEvent('happy:trucking:server:startJob', startTerminal, endTerminal)
+
     startTerminal = Config.Terminals[startTerminal]
     Config.General.JobState.jobInProgress = true
     Config.General.JobState.currentDestination = Config.Terminals[endTerminal]
@@ -23,7 +25,17 @@ function startJob(startTerminal, endTerminal)
 end
 
 function endJob()
-    TriggerServerEvent('happy:trucking:server:finishJob', currentJobDistance)
+    local vehicleInfo = lib.getVehicleProperties(Config.General.JobState.currentTruck)
+    TriggerServerEvent(
+        'happy:trucking:server:finishJob',
+        currentJobDistance,
+        vehicleInfo.engineHealth,
+        vehicleInfo.tankHealth,
+        vehicleInfo.bodyHealth,
+        vehicleInfo.fuelLevel,
+        vehicleInfo.tyres,
+        vehicleInfo.doors
+    )
     clearJob()
 end
 
