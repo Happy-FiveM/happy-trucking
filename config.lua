@@ -17,7 +17,7 @@ Config = {
             trailerRequired = false,
             currentTruck = nil
         },
-        debug = true, -- show polyzone, will also create a command for each terminal to show start job options
+        debug = false, -- show polyzone, will also create a command for each terminal to show start job options
         sphereZoneRadius = 60,
         getJobPedModel = `s_m_y_airworker`, -- just the ped we use to do the job management, get's targeted individually as an entity when they exist
         distanceToMoneyFactorial = 0.6, -- pay is primarily calculated by distance, this is the modifier to distance so if distance is 1000 and modifier is 0.7, base pay will be 700
